@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, TextInput, View, Button, TouchableOpacity, ScrollView, Keyboard } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, ScrollView, Keyboard } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Field, reduxForm, Form } from 'redux-form';
 
 import styles from './PageFirst.styles';
+import { Header, Button } from '../index';
 
 const submit = values => {
-    console.log('submitting form', values);
     Actions.pageSecond();
 }
 
@@ -28,7 +28,7 @@ class PageFirst extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.pageHeading}>Basic Info</Text>
+                <Header header="BASIC INFO" isStart={true} />
                 <ScrollView contentContainerStyle={styles.scroll} keyboardDismissMode="interactive">
 
                     <Text style={styles.submitText}>First Name</Text>
@@ -40,13 +40,7 @@ class PageFirst extends Component {
                     <Text style={styles.submitText}>City</Text>
                     <Field name="city" type="text" component={renderInput} />
 
-                    <View style={styles.buttonView}>
-                        <TouchableOpacity onPress={this.props.handleSubmit(submit)}>
-                            <View style={styles.submit}>
-                                <Text style={styles.submitText}>SUBMIT</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                    <Button title="SUBMIT" onPress={this.props.handleSubmit(submit)} />
 
                 </ScrollView>
             </View>
@@ -73,4 +67,4 @@ MyForm = reduxForm({
     }
 })(PageFirst)
 
-export default connect(({ main, form }) => ({ ...main, ...form }))(MyForm);
+export default connect(({ form }) => ({ ...form }))(MyForm);

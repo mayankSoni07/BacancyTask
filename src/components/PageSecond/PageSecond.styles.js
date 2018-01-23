@@ -7,16 +7,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#3b5998'
     },
-    pageHeading:{
-        marginTop: 20,
-        fontSize: 25,
-        fontWeight: "500",
-        color: '#fff'
-    },
-    gotoButton:{
-        position: 'absolute',
-        bottom: 50
-    }
 });
 
 export default styles;

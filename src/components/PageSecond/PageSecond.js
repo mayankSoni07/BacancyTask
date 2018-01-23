@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, View, Button } from 'react-native';
+import { Text, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+var ImagePicker = require('react-native-image-picker');
 
 import styles from './PageSecond.styles';
+import { Header, Button } from '../index';
+
+var options = {
+    title: 'Select Avatar',
+    customButtons: [
+        { name: 'fb', title: 'Choose Photo from Facebook' },
+    ],
+    storageOptions: {
+        skipBackup: true,
+        path: 'images'
+    }
+};
 
 /**
  * @class
@@ -11,22 +24,47 @@ import styles from './PageSecond.styles';
  */
 class PageSecond extends Component {
 
-    displayList(item, index) {
-        return (
-            <Text key={index} style={styles.scrollItems} >{index + 1}- {item}</Text>
-        );
+    constructor(props) {
+        super(props);
+        this.state = {
+            imageSource: {}
+        };
+    }
+
+    uploadImage() {
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            }
+            else {
+                let source = { uri: response.uri };
+
+                // You can also display the image using data:
+                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                this.setState({
+                    imageSource: source
+                });
+            }
+        });
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.pageHeading}>PAGE SECOND</Text>
-                <View style={styles.gotoButton}>
-                    <Button title="goto Page 1" onPress={() => Actions.pageFirst()} />
-                </View>
+                <Header header="UPLOAD IMAGE" isStart={false} />
+                <Button title="UPLOAD" onPress={() => Actions.pageThird()} />
             </View>
         )
     }
 }
 
-export default connect(({ mainReducer }) => ({ ...mainReducer }))(PageSecond);
+export default connect(({ main }) => ({ ...main }))(PageSecond);
