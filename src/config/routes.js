@@ -10,8 +10,8 @@ export default class Routes extends Component {
         return (
             <Router>
                 <Scene key="root">
-                    <Scene key="pageFirst" component={PageFirst} title="Page First" />
-                    <Scene key="pageSecond" component={PageSecond} title="Page Second" />
+                    <Scene key="pageFirst" component={PageFirst} title="Page First" hideNavBar/>
+                    <Scene key="pageSecond" component={PageSecond} title="Page Second" hideNavBar/>
                 </Scene>
             </Router>
         )

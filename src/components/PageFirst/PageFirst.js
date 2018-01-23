@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, TextInput, View, Button, TouchableOpacity } from 'react-native';
+import { Text, TextInput, View, Button, TouchableOpacity, ScrollView, Keyboard } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Field, reduxForm, Form } from 'redux-form';
 
 import styles from './PageFirst.styles';
 
-var self;
-
 const submit = values => {
-    console.log('submitting form', values, self)
+    console.log('submitting form', values);
+    Actions.pageSecond();
 }
 
 const renderInput = ({ input: { onChange, ...restInput }, meta: { touched, error, warning } }) => {
-
     return (
         <View>
             <TextInput style={styles.input} onChangeText={onChange} {...restInput} />
-            {touched && error && <Text style={{color: 'black'}}>{error}</Text>}
+            {touched && error ? <Text style={styles.errorText}>{error}</Text> : <Text style={styles.errorText}></Text>}
         </View>
     )
 }
@@ -28,37 +26,51 @@ const renderInput = ({ input: { onChange, ...restInput }, meta: { touched, error
  */
 class PageFirst extends Component {
     render() {
-        self = this;
         return (
             <View style={styles.container}>
-                <Text style={styles.pageHeading}>PAGE FIRST</Text>
+                <Text style={styles.pageHeading}>Basic Info</Text>
+                <ScrollView contentContainerStyle={styles.scroll} keyboardDismissMode="interactive">
 
-                <Field name="email" type="email" component={renderInput} />
-                {/* <TouchableOpacity onPress={handleSubmit(submit)}> */}
-                <TouchableOpacity onPress={this.props.handleSubmit(submit)}>
-                    <Text style={styles.button}>Submit</Text>
-                </TouchableOpacity>
+                    <Text style={styles.submitText}>First Name</Text>
+                    <Field name="firstName" type="text" component={renderInput} />
+                    <Text style={styles.submitText}>Last Name</Text>
+                    <Field name="lastName" type="text" component={renderInput} />
+                    <Text style={styles.submitText}>Address</Text>
+                    <Field name="address" type="text" component={renderInput} />
+                    <Text style={styles.submitText}>City</Text>
+                    <Field name="city" type="text" component={renderInput} />
 
-                <View style={styles.gotoButton}>
-                    <Button type="submit" title="goto Page 2" />
-                </View>
+                    <View style={styles.buttonView}>
+                        <TouchableOpacity onPress={this.props.handleSubmit(submit)}>
+                            <View style={styles.submit}>
+                                <Text style={styles.submitText}>SUBMIT</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                </ScrollView>
             </View>
         )
     }
 }
 
-MyForm  = reduxForm({
+MyForm = reduxForm({
     form: 'pageFirst',
     validate: values => {
-        console.log('values', values);
         const errors = {}
 
-        if (!values.email) {
-            errors.email = 'Email is required.'
+        if (!values.firstName) {
+            errors.firstName = 'First name is required.'
+        }
+        if (!values.address) {
+            errors.address = 'Address is required.'
+        }
+        if (!values.city) {
+            errors.city = 'City is required.'
         }
 
-        return errors
+        return errors;
     }
 })(PageFirst)
 
-export default connect(({ main }) => ({ ...main }))(MyForm);
+export default connect(({ main, form }) => ({ ...main, ...form }))(MyForm);
