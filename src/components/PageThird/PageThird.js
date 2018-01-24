@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, TextInput, View, TouchableOpacity, ScrollView, Keyboard } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, ScrollView, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Field, reduxForm, Form } from 'redux-form';
+import { Field, reset, reduxForm } from 'redux-form';
 
 import styles from './PageThird.styles';
 import { Header, Button } from '../index';
 
-const submit = values => {
+let self;
+
+const submit = (values, dispatch) => {
+    // dispatch(reset('pageFirst'));
     Actions.pageFourth();
 }
 
@@ -25,6 +28,23 @@ const renderInput = ({ input: { onChange, ...restInput }, meta: { touched, error
  * represents the PageThird component
  */
 class PageThird extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            emailList: []
+        }
+    }
+
+    componentDidMount() {
+        self = this;
+        AsyncStorage.getItem('emails')
+            .then((response) => JSON.parse(response))
+            .then((parsedResponse) => {
+                this.setState({ emailList: parsedResponse });
+            })
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -56,6 +76,8 @@ MyForm = reduxForm({
         } else {
             values.email && !(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) ?
                 errors.email = 'Invalid email address.' : "";
+            if (self.state.emailList && self.state.emailList.includes(values.email))
+                errors.email = 'Email already exists.';
         }
         if (!values.password) {
             errors.password = 'Password is required.'

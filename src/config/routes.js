@@ -10,6 +10,7 @@ export default class Routes extends Component {
         return (
             <Router>
                 <Scene key="root">
+                {/* <Scene key="pageFourth" component={PageFourth} title="Page Fourth" hideNavBar /> */}
                     <Scene key="pageFirst" component={PageFirst} title="Page First" hideNavBar />
                     <Scene key="pageSecond" component={PageSecond} title="Page Second" hideNavBar />
                     <Scene key="pageThird" component={PageThird} title="Page Third" hideNavBar />

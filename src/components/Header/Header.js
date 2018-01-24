@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
-import Actions from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 
 import styles from './Header.styles';
 

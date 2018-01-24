@@ -2,4 +2,4 @@
  * Action constants
  */
 
-export const SAVE_DATA = 'SAVE_DATA';
+export const SAVE_IMAGE = 'save_image';

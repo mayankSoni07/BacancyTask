@@ -7,9 +7,9 @@ import * as Action from '../constants/actionConst';
  * Actions Definition starts here
  */
 
- export const saveData = (list) => {
+ export const saveImage = (data) => {
     return ({
-        type: Action.SAVE_DATA,
-        payload: list
+        type: Action.SAVE_IMAGE,
+        payload: data
     })
 }
